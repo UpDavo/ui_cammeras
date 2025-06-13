@@ -20,10 +20,10 @@ export default function RootLayout({ children }: RootChildren) {
   return (
     <html lang="en">
       <head>
-        <title>HINT - Integraciones</title>
+        <title>HINT - Cammeras</title>
         <meta
           name="description"
-          content="HINT by heimdal, integraciones múltiples"
+          content="HINT by heimdal, Camaras de seguridad y monitoreo en tiempo real"
         />
         <meta name="robots" content="noindex, nofollow" />
         <meta

@@ -20,8 +20,19 @@ const authSlice = createSlice({
         accessToken: string;
       }>
     ) => {
-      state.user = action.payload.user;
+      // Si el usuario tiene permissions en la raíz, asegúrate de guardarlo
+      if (action.payload.user && action.payload.user.permissions) {
+        state.user = {
+          ...action.payload.user,
+          permissions: action.payload.user.permissions,
+        };
+      } else {
+        state.user = action.payload.user;
+      }
       state.accessToken = action.payload.accessToken;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
     },
 
     logoutSuccess: (state) => {

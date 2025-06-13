@@ -4,13 +4,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { loginUser } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import {
-  Button,
-  TextInput,
-  Container,
-  Notification,
-  Loader,
-} from "@mantine/core";
+import { Button, TextInput, Notification, Loader } from "@mantine/core";
 import { validateEmail } from "@/utils/validateEmail";
 
 export default function LoginForm() {
@@ -48,17 +42,20 @@ export default function LoginForm() {
   };
 
   return (
-    <Container className="w-full">
-      {error && (
-        <Notification
-          color="red"
-          className="mb-4"
-          onClose={() => setError(null)} // Permite cerrar la notificación
-        >
-          {error}
-        </Notification>
-      )}
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="w-full flex justify-center bg-transparent">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 w-full max-w-md p-6 rounded-xl shadow-lg bg-white"
+      >
+        {error && (
+          <Notification
+            color="red"
+            className="mb-4"
+            onClose={() => setError(null)}
+          >
+            {error}
+          </Notification>
+        )}
         <TextInput
           label="Email"
           placeholder="Enter your email"
@@ -89,6 +86,6 @@ export default function LoginForm() {
           {loading ? <Loader size="sm" color="white" /> : "Login"}
         </Button>
       </form>
-    </Container>
+    </div>
   );
 }

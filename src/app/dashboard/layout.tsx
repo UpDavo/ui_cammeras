@@ -55,7 +55,7 @@ function DashboardLayout({ children }: RootChildren) {
   };
 
   return (
-    <div className="flex h-screen-dvh">
+    <div className="flex h-screen">
       {/* Sidebar Desktop */}
       <Sidebar2
         user={user}

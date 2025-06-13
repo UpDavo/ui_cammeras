@@ -21,13 +21,13 @@ function LoginPage() {
   if (checkingAuth) return null;
 
   return (
-    <div className="flex items-center justify-center h-screen-dvh bg-gradient-to-r from-primary to-accent">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-primary to-accent">
       <Container
         fluid
-        className="flex flex-col items-center justify-center px-4 py-10 bg-white shadow-lg rounded-xl max-w-md w-full mx-10 md:mx-0"
+        className="flex flex-col items-center justify-center px-4 py-10 w-full"
       >
-        <h1 className="text-6xl font-bold mb-2 text-neutral">HINT</h1>
-        <h1 className="text-2xl mb-6 text-neutral">Login</h1>
+        <h1 className="text-6xl font-bold mb-2 text-white">HINT</h1>
+        <h1 className="text-2xl mb-6 text-white">Login</h1>
         <LoginForm />
       </Container>
     </div>

@@ -3,8 +3,9 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RiDashboardLine, RiSettingsLine } from "react-icons/ri";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { dashboardRoutes } from "@/routes/dashboardRoutes";
+import Image from "next/image";
 
 interface SidebarProps {
   className?: string;
@@ -58,7 +59,7 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
   // -----------------------
   const filteredRoutes = useMemo(
     () => filterRoutes(dashboardRoutes),
-    [dashboardRoutes, userPermissions, isAdmin]
+    [dashboardRoutes, userPermissions, isAdmin, user]
   );
 
   // -----------------------
@@ -107,7 +108,7 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
 
       {/* Menú */}
       <div className="py-4 overflow-y-auto mt-4">
-        <ul className="menu menu-lg menu-vertical p-0 text-white text-lg [&_li>*]:rounded-md [&_details>*]:rounded-md">
+        <ul className="menu w-full menu-lg menu-vertical p-0 text-white text-lg [&_li>*]:rounded-md [&_details>*]:rounded-md">
           {filteredRoutes.map((section) => (
             <div key={section.section}>
               {/* Divider con nombre de sección */}
@@ -162,6 +163,41 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
             </div>
           ))}
         </ul>
+      </div>
+      {/* Botón de perfil horizontal DaisyUI 5 al final del sidebar */}
+      <div className="absolute bottom-6 left-0 w-full flex justify-center">
+        <Link
+          href="/dashboard/profile"
+          className="btn btn-ghost flex flex-row items-center gap-4 px-4 py-10 w-auto min-w-[220px] max-w-xs bg-white/90 shadow-lg rounded-xl transition-all"
+        >
+          <div className="avatar avatar-online avatar-placeholder">
+            <div className="w-12 rounded-full bg-neutral">
+              {user?.photoUrl ? (
+                <Image
+                  src={user.photoUrl}
+                  alt="avatar"
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full rounded-full"
+                />
+              ) : (
+                <span className="text-2xl font-bold text-white">
+                  {user?.first_name?.charAt(0) || (
+                    <span className="icon-[mdi--account]" />
+                  )}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-base font-semibold text-primary line-clamp-1">
+              {user?.first_name || "Usuario"}
+            </span>
+            <span className="text-xs text-gray-500 font-medium mt-1">
+              Ver perfil
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   );

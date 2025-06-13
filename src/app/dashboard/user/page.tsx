@@ -99,6 +99,8 @@ export default function UserPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
+  console.log(user);
+
   // Verificar permisos
   useEffect(() => {
     const hasPermission =

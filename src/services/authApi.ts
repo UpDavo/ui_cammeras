@@ -3,6 +3,8 @@ import axios from "axios";
 
 export const login = async (email: string, password: string) => {
   try {
+    // console.log(email, password);
+    // console.log(`${API_BASE_URL}/auth/login/`);
     const response = await axios.post(
       `${API_BASE_URL}/auth/login/`,
       { email, password },
@@ -45,7 +47,7 @@ export const refreshToken = async () => {
       accessToken: response.data.access_token,
       user: response.data.user,
     };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // console.error("Error al refrescar el token:", error);
     return null; // O throw, según prefieras

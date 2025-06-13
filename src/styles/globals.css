@@ -1,6 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "mytheme";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-primary: #5a57ee;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #433fe9;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #a29cf8;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #2e2e2e;
+  --color-neutral-content: #ffffff;
+
+  --color-base-100: #e5e7eb;
+  --color-base-200: #d1d5db;
+  --color-base-300: #9ca3af;
+  --color-base-content: #111827;
+
+  --color-info: #5a57ee;
+  --color-info-content: #ffffff;
+
+  --color-success: #4caf50;
+  --color-success-content: #ffffff;
+
+  --color-warning: #fb8c00;
+  --color-warning-content: #ffffff;
+
+  --color-error: #e53935;
+  --color-error-content: #ffffff;
+
+  --color-black: #212121;
+
+  /* border radius */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
 
 :root {
   --background: #ffffff;

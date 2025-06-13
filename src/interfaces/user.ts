@@ -1,3 +1,5 @@
+import { Permission } from "./permission";
+
 export interface User {
   id: number;
   email: string;
@@ -12,6 +14,7 @@ export interface User {
     permissions: { id: number; name: string; path: string }[];
     is_admin: boolean;
   } | null;
+  permissions?: Permission[]; // Permisos individuales del usuario
 }
 
 export interface SimpleUser {
