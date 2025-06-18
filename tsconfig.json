@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/auth/login/page.jsx", "src/app/auth/forgot/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/auth/login/page.jsx", "src/app/auth/forgot/page.jsx", "src/core/components/ConfirmDeleteModal.jsx", "src/core/components/Unauthorized.jsx", "src/core/components/Sidebar.jsx", "src/core/components/Drawer.jsx", "src/app/dashboard/profile/page.jsx", "src/app/dashboard/user/permission/page.jsx", "src/app/dashboard/user/roles/page.jsx", "src/app/dashboard/user/page.jsx", "src/app/dashboard/layout.jsx", "src/app/dashboard/page.jsx", "src/app/layout.jsx", "src/app/Provider.jsx"],
   "exclude": ["node_modules"]
 }

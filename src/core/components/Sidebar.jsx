@@ -10,7 +10,8 @@ import Image from "next/image";
 export default function Sidebar2({ className = "", user }) {
   const pathname = usePathname();
 
-  const userPermissions = user?.role?.permissions?.map((perm) => perm.path) || [];
+  const userPermissions =
+    user?.role?.permissions?.map((perm) => perm.path) || [];
   const isAdmin = user?.role?.is_admin;
 
   const filterRoutes = (routeList) => {
@@ -74,67 +75,73 @@ export default function Sidebar2({ className = "", user }) {
   return (
     <div
       id="sidebar"
-      className={`relative hidden md:block w-96 h-screen p-4 overflow-y-auto transition-transform bg-primary text-white shadow ${className}`}
+      className={`relative hidden md:block w-96 h-screen p-4 overflow-y-auto transition-transform bg-white shadow ${className}`}
     >
       {/* Logo */}
       <div className="mt-8 flex justify-center">
-        <h1 className="text-6xl uppercase font-bold">HINT</h1>
+        <h1 className="text-6xl uppercase font-bold text-primary">HINT</h1>
       </div>
 
       {/* Menú */}
       <div className="py-4 overflow-y-auto mt-4">
-        <ul className="menu w-full menu-lg menu-vertical p-0 text-white text-lg [&_li>*]:rounded-md [&_details>*]:rounded-md">
+        <ul className="menu w-full menu-lg menu-vertical p-0 text-primary text-lg [&_li>*]:rounded-md [&_details>*]:rounded-md">
           {filteredRoutes.map((section) => (
             <div key={section.section}>
               {/* Divider con nombre de sección */}
-              <div className="divider divider-accent text-md">
+              <div className="divider divider-primary text-md">
                 {section.section}
               </div>
 
               {/* Items de menú */}
-              {section.children.map((route) => (
-                <li className="mt-1" key={route.name}>
-                  {route.children ? (
-                    <details open={openSubmenus[route.name]}>
-                      <summary
-                        className="hover:bg-base-100 hover:text-primary cursor-pointer active:bg-white active:text-primary"
-                        onClick={() => toggleSubmenu(route.name)}
+              {section.children.map((route) => {
+                // Determinar si alguna subruta está activa
+                const isSubrouteActive =
+                  route.children &&
+                  route.children.some((child) => pathname === child.path);
+                const isActive = pathname === route.path || isSubrouteActive;
+                return (
+                  <li className="mt-1" key={route.name}>
+                    {route.children ? (
+                      <details open={openSubmenus[route.name]}>
+                        <summary
+                          className={isActive ? "menu-active" : ""}
+                          onClick={() => toggleSubmenu(route.name)}
+                        >
+                          {route.icon ? <route.icon /> : <RiSettingsLine />}
+                          <span className="ms-3">{route.name}</span>
+                        </summary>
+                        <ul>
+                          {route.children.map((child) => (
+                            <li className="mt-1" key={child.path}>
+                              <Link
+                                href={child.path}
+                                className={`${
+                                  pathname === child.path ? "menu-active" : ""
+                                }`}
+                              >
+                                {child.icon ? (
+                                  <child.icon />
+                                ) : (
+                                  <RiDashboardLine />
+                                )}
+                                <span className="ms-3">{child.name}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    ) : (
+                      <Link
+                        href={route.path}
+                        className={` ${isActive ? "menu-active" : ""}`}
                       >
-                        <RiSettingsLine />
+                        {route.icon ? <route.icon /> : <RiDashboardLine />}
                         <span className="ms-3">{route.name}</span>
-                      </summary>
-                      <ul>
-                        {route.children.map((child) => (
-                          <li className="mt-1" key={child.path}>
-                            <Link
-                              href={child.path}
-                              className={`hover:bg-base-100 hover:text-primary ${
-                                pathname === child.path
-                                  ? "bg-base-100 text-primary"
-                                  : ""
-                              }`}
-                            >
-                              <span className="ms-3">{child.name}</span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  ) : (
-                    <Link
-                      href={route.path}
-                      className={`hover:bg-base-100 hover:text-primary flex items-center gap-3 ${
-                        pathname === route.path
-                          ? "bg-base-100 text-primary"
-                          : ""
-                      }`}
-                    >
-                      <RiDashboardLine />
-                      <span className="ms-3">{route.name}</span>
-                    </Link>
-                  )}
-                </li>
-              ))}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </div>
           ))}
         </ul>
