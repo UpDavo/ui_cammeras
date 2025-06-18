@@ -2,18 +2,18 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { logoutUser } from "@/hooks/useAuth";
+import { useAppDispatch } from "@/core/hooks/useAppDispatch";
+import { logoutUser } from "@/auth/hooks/useAuth";
 
 import { RiMenuLine, RiSettings3Line } from "react-icons/ri";
-import { useAuth } from "@/hooks/useAuth";
-import withAuth from "@/hoc/withAuth";
-import MobileDrawer from "@/components/MobileDrawer";
-import { RootChildren } from "@/interfaces/root";
-import { dashboardRoutes } from "@/routes/dashboardRoutes";
+import { useAuth } from "@/auth/hooks/useAuth";
+import withAuth from "@/core/hoc/withAuth";
+import MobileDrawer from "@/core/components/MobileDrawer";
+import { RootChildren } from "@/core/interfaces/root";
+import { dashboardRoutes } from "@/core/routes/dashboardRoutes";
 import Link from "next/link";
 import { Button } from "@mantine/core";
-import Sidebar2 from "@/components/Sidebar2";
+import Sidebar from "@/core/components/Sidebar";
 
 function DashboardLayout({ children }: RootChildren) {
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -57,7 +57,7 @@ function DashboardLayout({ children }: RootChildren) {
   return (
     <div className="flex h-screen">
       {/* Sidebar Desktop */}
-      <Sidebar2
+      <Sidebar
         user={user}
         className={`fixed left-0 top-0 h-screen transition-transform duration-300 ${
           sidebarVisible ? "translate-x-0" : "-translate-x-full"

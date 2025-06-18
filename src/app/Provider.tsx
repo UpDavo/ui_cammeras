@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { store } from "@/store";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { refreshAccessToken } from "@/hooks/useAuth";
+import { store } from "@/core/store";
+import { useAppDispatch } from "@/core/hooks/useAppDispatch";
+import { refreshAccessToken } from "@/auth/hooks/useAuth";
 import { Loader, Text, Container } from "@mantine/core";
 
 function AuthLoader({ children }: { children: React.ReactNode }) {

@@ -1,21 +1,27 @@
 "use client";
+
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@/styles/globals.css";
-import { RootChildren } from "@/interfaces/root";
+import { RootChildren } from "@/core/interfaces/root";
 import Providers from "./Provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getThemeFromCSS } from "@/core/utils/getThemeFromCss";
 
 export default function RootLayout({ children }: RootChildren) {
+  const [theme, setTheme] = useState<any>(null);
+
   useEffect(() => {
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    document.documentElement.setAttribute(
-      "data-theme",
-      prefersDark ? "mydarktheme" : "mytheme"
-    );
+    const themeName = prefersDark ? "mydarktheme" : "mytheme";
+
+    document.documentElement.setAttribute("data-theme", themeName);
+    setTheme(getThemeFromCSS());
   }, []);
+
+  if (!theme) return null; // o un loading screen
 
   return (
     <html lang="en">
@@ -23,7 +29,7 @@ export default function RootLayout({ children }: RootChildren) {
         <title>HINT - Cammeras</title>
         <meta
           name="description"
-          content="HINT by heimdal, Camaras de seguridad y monitoreo en tiempo real"
+          content="HINT by heimdal, Cámaras de seguridad y monitoreo en tiempo real"
         />
         <meta name="robots" content="noindex, nofollow" />
         <meta
@@ -36,7 +42,7 @@ export default function RootLayout({ children }: RootChildren) {
         />
       </head>
       <body>
-        <MantineProvider>
+        <MantineProvider theme={theme}>
           <Providers>{children}</Providers>
         </MantineProvider>
       </body>

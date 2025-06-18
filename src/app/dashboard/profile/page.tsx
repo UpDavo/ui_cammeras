@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/auth/hooks/useAuth";
 import { Modal, Button, TextInput } from "@mantine/core";
 import { RiEdit2Line } from "react-icons/ri";
 import { updateUser } from "@/services/userApi";

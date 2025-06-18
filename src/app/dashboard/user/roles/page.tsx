@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/auth/hooks/useAuth";
 import {
   listRoles,
   createRole,

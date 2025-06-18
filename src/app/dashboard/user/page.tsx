@@ -9,7 +9,7 @@ import {
   deleteUser,
 } from "@/services/userApi";
 import { listAllRoles } from "@/services/roleApi";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/auth/hooks/useAuth";
 import {
   Loader,
   TextInput,
@@ -25,9 +25,9 @@ import {
   RiEdit2Line,
   RiDeleteBin6Line,
 } from "react-icons/ri";
-import { SimpleUser, SimpleUserPass } from "@/interfaces/user";
-import { Unauthorized } from "@/components/Unauthorized";
-import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
+import { SimpleUser, SimpleUserPass } from "@/core/interfaces/user";
+import { Unauthorized } from "@/core/components/Unauthorized";
+import ConfirmDeleteModal from "@/core/components/ConfirmDeleteModal";
 
 interface FormState {
   email: string;
