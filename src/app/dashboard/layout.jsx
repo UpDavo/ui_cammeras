@@ -8,14 +8,14 @@ import { logoutUser } from "@/auth/hooks/useAuth";
 import { RiMenuLine, RiSettings3Line } from "react-icons/ri";
 import { useAuth } from "@/auth/hooks/useAuth";
 import withAuth from "@/core/hoc/withAuth";
-import MobileDrawer from "@/core/components/MobileDrawer";
+import Drawer from "@/core/components/Drawer";
 import { RootChildren } from "@/core/interfaces/root";
 import { dashboardRoutes } from "@/core/routes/dashboardRoutes";
 import Link from "next/link";
 import { Button } from "@mantine/core";
 import Sidebar from "@/core/components/Sidebar";
 
-function DashboardLayout({ children }: RootChildren) {
+function DashboardLayout({ children }) {
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true); // Controla visibilidad de Sidebar2
   const [activeRoute, setActiveRoute] = useState("");
@@ -25,7 +25,7 @@ function DashboardLayout({ children }: RootChildren) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  function findCurrentRoute(routes: any[], pathname: string): any | null {
+  function findCurrentRoute(routes, pathname) {
     for (const route of routes) {
       if (route.path === pathname) {
         return route;
@@ -65,7 +65,7 @@ function DashboardLayout({ children }: RootChildren) {
       />
 
       {/* Mobile Drawer */}
-      <MobileDrawer
+      <Drawer
         routes={dashboardRoutes}
         drawerOpened={drawerOpened}
         setDrawerOpened={setDrawerOpened}

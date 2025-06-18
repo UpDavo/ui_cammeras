@@ -7,33 +7,21 @@ import { useState, useMemo } from "react";
 import { dashboardRoutes } from "@/core/routes/dashboardRoutes";
 import Image from "next/image";
 
-interface SidebarProps {
-  className?: string;
-  user: any; // Ajusta según tu modelo de usuario
-}
-
-export default function Sidebar2({ className = "", user }: SidebarProps) {
+export default function Sidebar2({ className = "", user }) {
   const pathname = usePathname();
 
-  // -----------------------
-  // 1. Extrae permisos e info de admin
-  // -----------------------
-  const userPermissions =
-    user?.role?.permissions?.map((perm: any) => perm.path) || [];
+  const userPermissions = user?.role?.permissions?.map((perm) => perm.path) || [];
   const isAdmin = user?.role?.is_admin;
 
-  // -----------------------
-  // 2. Filtrar rutas según permisos
-  // -----------------------
-  const filterRoutes = (routeList: any[]) => {
+  const filterRoutes = (routeList) => {
     return routeList
       .map((section) => ({
         ...section,
         children: section.children
-          .map((route: any) => {
+          .map((route) => {
             if (route.children) {
               const filteredChildren = route.children.filter(
-                (child: any) =>
+                (child) =>
                   isAdmin ||
                   !child.permission ||
                   userPermissions.includes(child.permission)
@@ -54,42 +42,29 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
       .filter((section) => section.children.length > 0);
   };
 
-  // -----------------------
-  // 3. Memorizar rutas filtradas
-  // -----------------------
   const filteredRoutes = useMemo(
     () => filterRoutes(dashboardRoutes),
     [dashboardRoutes, userPermissions, isAdmin, user]
   );
 
-  // -----------------------
-  // 4. Estado inicial: abre el submenú activo (una sola vez)
-  // -----------------------
-  const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>(
-    () => {
-      const initialOpenSubmenus: { [key: string]: boolean } = {};
-
-      filteredRoutes.forEach((section) => {
-        section.children.forEach((route: any) => {
-          if (route.children) {
-            const isChildActive = route.children.some((child: any) =>
-              pathname.startsWith(child.path)
-            );
-            if (isChildActive) {
-              initialOpenSubmenus[route.name] = true;
-            }
+  const [openSubmenus, setOpenSubmenus] = useState(() => {
+    const initialOpenSubmenus = {};
+    filteredRoutes.forEach((section) => {
+      section.children.forEach((route) => {
+        if (route.children) {
+          const isChildActive = route.children.some((child) =>
+            pathname.startsWith(child.path)
+          );
+          if (isChildActive) {
+            initialOpenSubmenus[route.name] = true;
           }
-        });
+        }
       });
+    });
+    return initialOpenSubmenus;
+  });
 
-      return initialOpenSubmenus;
-    }
-  );
-
-  // -----------------------
-  // 5. Toggle manual de submenús
-  // -----------------------
-  const toggleSubmenu = (menu: string) => {
+  const toggleSubmenu = (menu) => {
     setOpenSubmenus((prev) => ({
       ...prev,
       [menu]: !prev[menu],
@@ -117,7 +92,7 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
               </div>
 
               {/* Items de menú */}
-              {section.children.map((route: any) => (
+              {section.children.map((route) => (
                 <li className="mt-1" key={route.name}>
                   {route.children ? (
                     <details open={openSubmenus[route.name]}>
@@ -129,7 +104,7 @@ export default function Sidebar2({ className = "", user }: SidebarProps) {
                         <span className="ms-3">{route.name}</span>
                       </summary>
                       <ul>
-                        {route.children.map((child: any) => (
+                        {route.children.map((child) => (
                           <li className="mt-1" key={child.path}>
                             <Link
                               href={child.path}

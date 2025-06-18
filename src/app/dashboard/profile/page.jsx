@@ -22,7 +22,7 @@ export default function ProfilePage() {
     role: user?.role?.id || 1,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -112,7 +112,10 @@ export default function ProfilePage() {
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
         <div className="mt-8">
-          <Button onClick={handleSave} className="btn btn-info text-white btn-block">
+          <Button
+            onClick={handleSave}
+            className="btn btn-info text-white btn-block"
+          >
             Guardar Cambios
           </Button>
         </div>

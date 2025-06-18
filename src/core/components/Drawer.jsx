@@ -3,36 +3,28 @@ import { useState } from "react";
 import { Box, Drawer } from "@mantine/core";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MobileDrawerProps } from "@/core/interfaces/navigation";
 
-const MobileDrawer: React.FC<MobileDrawerProps & { user: any }> = ({
-  routes,
-  drawerOpened,
-  setDrawerOpened,
-  user,
-}) => {
-  const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+const MobileDrawer = ({ routes, drawerOpened, setDrawerOpened, user }) => {
+  const [openSubmenus, setOpenSubmenus] = useState({});
   const pathname = usePathname();
 
-  const toggleSubmenu = (menu: string) => {
+  const toggleSubmenu = (menu) => {
     setOpenSubmenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
 
   // Filtrar rutas según permisos del usuario o si es admin
   const userPermissions =
-    user?.role?.permissions?.map((perm: any) => perm.path) || [];
+    user?.role?.permissions?.map((perm) => perm.path) || [];
   const isAdmin = user?.role?.is_admin;
 
-  const filterRoutes = (routeList: any[]) => {
+  const filterRoutes = (routeList) => {
     return routeList
       .map((section) => ({
         ...section,
-        children: section.children.filter((route: any) => {
+        children: section.children.filter((route) => {
           if (isAdmin) return true;
           if (route.children) {
-            route.children = route.children.filter((child: any) => {
+            route.children = route.children.filter((child) => {
               return (
                 !child.permission || userPermissions.includes(child.permission)
               );
@@ -74,7 +66,7 @@ const MobileDrawer: React.FC<MobileDrawerProps & { user: any }> = ({
                 {section.section}
               </div>
 
-              {section.children.map((route: any) => {
+              {section.children.map((route) => {
                 const hasChildren = Boolean(route.children);
 
                 return (
@@ -92,7 +84,7 @@ const MobileDrawer: React.FC<MobileDrawerProps & { user: any }> = ({
                         {/* Links dentro del submenú */}
                         {openSubmenus[route.name] && (
                           <div className="ml-4">
-                            {route.children.map((child: any) => {
+                            {route.children.map((child) => {
                               const isActive = pathname === child.path;
 
                               return (

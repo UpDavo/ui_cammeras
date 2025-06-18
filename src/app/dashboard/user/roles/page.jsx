@@ -8,7 +8,7 @@ import {
   updateRole,
   deleteRole,
   listPermissions,
-} from "@/services/roleApi";
+} from "@/auth/services/roleApi";
 import {
   Loader,
   TextInput,
@@ -28,22 +28,17 @@ import {
 
 export default function RolePage() {
   const { accessToken } = useAuth();
-  const [roles, setRoles] = useState<any[]>([]);
-  const [permissions, setPermissions] = useState<any[]>([]);
-  const [formState, setFormState] = useState<{
-    name: string;
-    description: string;
-    is_admin: boolean;
-    permissions: string[];
-  }>({
+  const [roles, setRoles] = useState([]);
+  const [permissions, setPermissions] = useState([]);
+  const [formState, setFormState] = useState({
     name: "",
     description: "",
     is_admin: false,
     permissions: [],
   });
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState(0);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -114,20 +109,20 @@ export default function RolePage() {
     }
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item) => {
     setFormState({
       name: item.name,
       description: item.description || "",
       is_admin: !!item.is_admin,
       permissions: Array.isArray(item.permissions)
-        ? item.permissions.map((p: any) => p.id?.toString() || p.toString())
+        ? item.permissions.map((p) => p.id?.toString() || p.toString())
         : [],
     });
     setEditingId(item.id);
     setModalOpen(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id) => {
     try {
       await deleteRole(id, accessToken);
       fetchData();
@@ -136,7 +131,7 @@ export default function RolePage() {
     }
   };
 
-  const permissionOptions = permissions.map((perm: any) => ({
+  const permissionOptions = permissions.map((perm) => ({
     value: perm.id?.toString() || perm.toString(),
     label: perm.name,
   }));
@@ -202,7 +197,7 @@ export default function RolePage() {
                       <td>{item.is_admin ? "Sí" : "No"}</td>
                       <td>
                         {Array.isArray(item.permissions)
-                          ? item.permissions.map((p: any) => p.name).join(", ")
+                          ? item.permissions.map((p) => p.name).join(", ")
                           : "—"}
                       </td>
                       <td className="flex gap-2">
@@ -258,7 +253,7 @@ export default function RolePage() {
                     <div className="mb-2">
                       <span className="font-semibold">Permisos: </span>
                       {Array.isArray(item.permissions)
-                        ? item.permissions.map((p: any) => p.name).join(", ")
+                        ? item.permissions.map((p) => p.name).join(", ")
                         : "—"}
                     </div>
                     <div className="grid grid-cols-2 gap-2 mt-4">

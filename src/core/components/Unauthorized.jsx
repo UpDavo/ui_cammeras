@@ -1,5 +1,3 @@
-import React from "react";
-
 export const Unauthorized = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-64">

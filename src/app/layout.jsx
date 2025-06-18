@@ -8,8 +8,8 @@ import Providers from "./Provider";
 import { useEffect, useState } from "react";
 import { getThemeFromCSS } from "@/core/utils/getThemeFromCss";
 
-export default function RootLayout({ children }: RootChildren) {
-  const [theme, setTheme] = useState<any>(null);
+export default function RootLayout({ children }) {
+  const [theme, setTheme] = useState(null);
 
   useEffect(() => {
     const prefersDark = window.matchMedia(

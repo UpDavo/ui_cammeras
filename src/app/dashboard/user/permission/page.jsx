@@ -7,7 +7,7 @@ import {
   createPermission,
   updatePermission,
   deletePermission,
-} from "@/services/roleApi";
+} from "@/auth/services/roleApi";
 import {
   Loader,
   TextInput,
@@ -34,21 +34,16 @@ const methodOptions = [
 
 export default function PermissionPage() {
   const { accessToken } = useAuth();
-  const [permissions, setPermissions] = useState<any[]>([]);
-  const [formState, setFormState] = useState<{
-    name: string;
-    path: string;
-    methods: string[];
-    description: string;
-  }>({
+  const [permissions, setPermissions] = useState([]);
+  const [formState, setFormState] = useState({
     name: "",
     path: "",
     methods: [],
     description: "",
   });
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState(0);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -72,7 +67,7 @@ export default function PermissionPage() {
       // Filtrado y paginación en frontend
       let filtered = data.results || data;
       if (searchQuery) {
-        filtered = filtered.filter((perm: any) =>
+        filtered = filtered.filter((perm) =>
           perm.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
@@ -95,11 +90,7 @@ export default function PermissionPage() {
         const updatedFormState = {
           ...formState,
           methods: formState.methods.map((m) => {
-            // If your backend expects method IDs (numbers), map accordingly.
-            // Replace this logic if you have a mapping from method name to ID.
-            // For now, just return as-is if already a number, or provide a mapping.
-            // Example mapping (adjust as needed):
-            const methodMap: { [key: string]: number } = {
+            const methodMap = {
               GET: 1,
               POST: 2,
               PUT: 3,
@@ -110,8 +101,7 @@ export default function PermissionPage() {
         };
         await updatePermission(editingId, updatedFormState, accessToken);
       } else {
-        // Convert methods from string[] to number[] if needed
-        const methodMap: { [key: string]: number } = {
+        const methodMap = {
           GET: 1,
           POST: 2,
           PUT: 3,
@@ -133,12 +123,12 @@ export default function PermissionPage() {
   };
 
   // Edit permission
-  const handleEdit = (item: any) => {
+  const handleEdit = (item) => {
     setFormState({
       name: item.name,
       path: item.path,
       methods: Array.isArray(item.methods)
-        ? item.methods.map((m: any) => (typeof m === "string" ? m : m.name))
+        ? item.methods.map((m) => (typeof m === "string" ? m : m.name))
         : [],
       description: item.description || "",
     });
@@ -147,7 +137,7 @@ export default function PermissionPage() {
   };
 
   // Delete permission
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id) => {
     try {
       await deletePermission(id, accessToken);
       fetchData();
@@ -212,9 +202,7 @@ export default function PermissionPage() {
                       <td>
                         {Array.isArray(item.methods)
                           ? item.methods
-                              .map((m: any) =>
-                                typeof m === "string" ? m : m.name
-                              )
+                              .map((m) => (typeof m === "string" ? m : m.name))
                               .join(", ")
                           : "—"}
                       </td>
@@ -269,9 +257,7 @@ export default function PermissionPage() {
                       <span className="font-semibold">Métodos: </span>
                       {Array.isArray(item.methods)
                         ? item.methods
-                            .map((m: any) =>
-                              typeof m === "string" ? m : m.name
-                            )
+                            .map((m) => (typeof m === "string" ? m : m.name))
                             .join(", ")
                         : "—"}
                     </div>

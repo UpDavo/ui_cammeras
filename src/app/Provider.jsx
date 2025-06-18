@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/core/hooks/useAppDispatch";
 import { refreshAccessToken } from "@/auth/hooks/useAuth";
 import { Loader, Text, Container } from "@mantine/core";
 
-function AuthLoader({ children }: { children: React.ReactNode }) {
+function AuthLoader({ children }) {
   const dispatch = useAppDispatch();
   const [checkingAuth, setCheckingAuth] = useState(true);
 
@@ -29,7 +29,7 @@ function AuthLoader({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function Providers({ children }) {
   return (
     <ReduxProvider store={store}>
       <AuthLoader>{children}</AuthLoader>

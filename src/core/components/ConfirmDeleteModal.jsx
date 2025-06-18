@@ -2,21 +2,13 @@
 
 import { Modal, Button, Loader } from "@mantine/core";
 
-interface ConfirmDeleteModalProps {
-  opened: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  itemName?: string | null;
-  loading?: boolean;
-}
-
 export default function ConfirmDeleteModal({
   opened,
   onClose,
   onConfirm,
   itemName,
   loading = false,
-}: ConfirmDeleteModalProps) {
+}) {
   return (
     <Modal
       opened={opened}

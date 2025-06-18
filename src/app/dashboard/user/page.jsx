@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import {
   usersList,
   createUser,
   userUpdate,
   deleteUser,
-} from "@/services/userApi";
-import { listAllRoles } from "@/services/roleApi";
+} from "@/auth/services/userApi";
+import { listAllRoles } from "@/auth/services/roleApi";
 import { useAuth } from "@/auth/hooks/useAuth";
 import {
   Loader,
@@ -25,18 +25,9 @@ import {
   RiEdit2Line,
   RiDeleteBin6Line,
 } from "react-icons/ri";
-import { SimpleUser, SimpleUserPass } from "@/core/interfaces/user";
+// import { SimpleUser, SimpleUserPass } from "@/core/interfaces/user";
 import { Unauthorized } from "@/core/components/Unauthorized";
 import ConfirmDeleteModal from "@/core/components/ConfirmDeleteModal";
-
-interface FormState {
-  email: string;
-  password?: string; // opcional
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  role: string; // lo tienes como string, luego lo casteas a number
-}
 
 export default function UserPage() {
   const router = useRouter();
@@ -44,11 +35,11 @@ export default function UserPage() {
 
   //delete
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
-  const [deleteTargetName, setDeleteTargetName] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState(0);
+  const [deleteTargetName, setDeleteTargetName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const openConfirmDelete = (id: number, name: string) => {
+  const openConfirmDelete = (id, name) => {
     setDeleteTargetId(id);
     setDeleteTargetName(name);
     setConfirmDeleteOpen(true);
@@ -74,12 +65,12 @@ export default function UserPage() {
   };
 
   // Estado para verificar permisos de acceso
-  const [authorized, setAuthorized] = useState<boolean | null>(null);
+  const [authorized, setAuthorized] = useState(false);
 
   // Estados para la data (usuarios), roles y form
-  const [data, setData] = useState<any[]>([]);
-  const [roles, setRoles] = useState<any[]>([]);
-  const [formState, setFormState] = useState<FormState>({
+  const [data, setData] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [formState, setFormState] = useState({
     email: "",
     password: "",
     first_name: "",
@@ -89,7 +80,7 @@ export default function UserPage() {
   });
 
   // Estados para manejo de errores y de carga
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Estados para paginación, búsqueda, modal y edición
@@ -97,7 +88,7 @@ export default function UserPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState(null);
 
   console.log(user);
 
@@ -131,7 +122,7 @@ export default function UserPage() {
   }, [accessToken]);
 
   // Transformar roles a formato Select de Mantine
-  const roleOptions = roles.map((role: any) => ({
+  const roleOptions = roles.map((role) => ({
     value: role.id.toString(),
     label: role.name,
   }));
@@ -179,7 +170,7 @@ export default function UserPage() {
   const handleSave = async () => {
     if (editingId) {
       // userUpdate (SimpleUser) --> sin password
-      const simpleUser: SimpleUser = {
+      const simpleUser = {
         email: formState.email,
         first_name: formState.first_name,
         last_name: formState.last_name,
@@ -195,7 +186,7 @@ export default function UserPage() {
         console.error("Falta password al crear un usuario");
         return;
       }
-      const simpleUserPass: SimpleUserPass = {
+      const simpleUserPass = {
         email: formState.email,
         password: formState.password,
         first_name: formState.first_name,
